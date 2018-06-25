@@ -1,12 +1,39 @@
 package mr
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"github.com/globalsign/mgo"
 )
+
+const defaultURL = "mongodb://localhost/%s"
 
 // MongoRepo interacts with MongoDB
 type MongoRepo struct {
 	*mgo.Database
+}
+
+// Autoconnect tries to determine its DB URI from looking at the MONGODB_URI
+// environment variable. If it is not set or empty it falls back to connecting
+// to localhost, using "fallbackDBName" as the Database to use.
+func Autoconnect(fallbackDBName string) (Repository, error) {
+	url := os.Getenv("MONGODB_URI")
+	if url == "" {
+		url = fmt.Sprintf(defaultURL, fallbackDBName)
+	}
+	return Connect(url)
+}
+
+// MustAutoconnect works similar to Autoconnect, but aborts the programm if
+// connection fails.
+func MustAutoconnect(fallbackDBName string) Repository {
+	repo, err := Autoconnect(fallbackDBName)
+	if err != nil {
+		log.Fatalln("MongoRepo: Could not connect:", err.Error())
+	}
+	return repo
 }
 
 // Connect dials MongoDB and returns the configured Repository

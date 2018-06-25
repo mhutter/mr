@@ -6,11 +6,10 @@ Library to ease interaction with MongoDB.
 
 This package is an opinionated abstraction for [mgo][].
 
-To get started, connect to MongoDB:
+To get started, connect to MongoDB (uses `$MONGODB_URI` from environment if set, or `localhost`):
 
 ```go
-url := "mongodb://user:pass@host/db-name"
-repo, err := mr.Connect(url)
+repo := mr.MustAutoconnect("db-name")
 ```
 
 Include the "Base" type in your data types:
