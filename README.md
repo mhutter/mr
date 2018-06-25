@@ -6,9 +6,7 @@ Library to ease interaction with MongoDB.
 
 This package is an opinionated abstraction for [mgo][].
 
-## Getting Started
-
-Connect to MongoDB (uses `$MONGODB_URI` from environment if set, or `localhost`):
+To get started, connect to MongoDB (uses `$MONGODB_URI` from environment if set, or `localhost`):
 
 ```go
 repo := mr.MustAutoconnect("db-name")
@@ -38,16 +36,6 @@ The "MongoCollection" type implements the basic CRUD operations defined in the "
 var u User
 err := repo.C("users").Find("5b2ec2bc5a39251ef18064f8", &u)
 ```
-
-## HTTP Middleware
-
-You can use `mr.Middleware(repo)` to create a middleware that injects the given Repository in each request:
-
-```go
-withDB := mr.Middleware(repo)
-http.HandleFunc("/api/v1/users", withDB(myHandler))
-```
-
 
 > [Manuel Hutter](https://hutter.io) -
 > GitHub [@mhutter](https://github.com/mhutter) -
