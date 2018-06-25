@@ -7,7 +7,7 @@ import (
 )
 
 // Base contains common attributes that are common to all model structs that
-// are to be stored in the database. It also implements the iModel interface,
+// are to be stored in the database. It also implements the Model interface,
 // which is used when interacting with the repository.
 //
 // See package documentation for usage.
