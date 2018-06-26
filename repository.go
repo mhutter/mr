@@ -1,14 +1,13 @@
 package mr
 
 import (
-	"fmt"
 	"log"
 	"os"
 
 	"github.com/globalsign/mgo"
 )
 
-const defaultURL = "mongodb://localhost/%s"
+const defaultURL = "mongodb://localhost/"
 
 // MongoRepo interacts with MongoDB
 type MongoRepo struct {
@@ -20,8 +19,9 @@ type MongoRepo struct {
 // to localhost, using "fallbackDBName" as the Database to use.
 func Autoconnect(fallbackDBName string) (Repository, error) {
 	url := os.Getenv("MONGODB_URI")
-	if url == "" {
-		url = fmt.Sprintf(defaultURL, fallbackDBName)
+	if len(url) < 1 {
+		url = defaultURL + fallbackDBName
+		log.Println("MONGODB_URI not set, connecting to fallback DB:", url)
 	}
 	return Connect(url)
 }
