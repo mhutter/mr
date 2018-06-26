@@ -20,7 +20,7 @@ type Repository interface {
 type Collection interface {
 	Insert(object Model) error
 	FindAll(result interface{}) error
-	Find(id, result interface{}) error
+	Find(id string, result interface{}) error
 	FindBy(key string, value, result interface{}) error
 	FindOneBy(key string, value, result interface{}) error
 	Update(object Model) error

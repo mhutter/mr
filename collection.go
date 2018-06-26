@@ -27,9 +27,13 @@ func (c *MongoCollection) FindAll(result interface{}) error {
 	return c.Collection.Find(nil).All(result)
 }
 
-// Find returns one record by its ObjectID
-func (c *MongoCollection) Find(id, result interface{}) error {
-	return c.Collection.FindId(id).One(result)
+// Find returns one record by its ObjectID. Returns an ErrNoObjectID if "id" is
+// not a valid ObjectID.
+func (c *MongoCollection) Find(id string, result interface{}) error {
+	if !bson.IsObjectIdHex(id) {
+		return ErrNoObjectID(id)
+	}
+	return c.Collection.FindId(bson.ObjectIdHex(id)).One(result)
 }
 
 // FindBy returns documents where `key` is set to `value`

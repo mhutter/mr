@@ -30,7 +30,7 @@ Doing so will add the following fields to your type:
 * CreatedAt: Timestamp of first insertion into DB
 * UpdatedAt: Timestamp of the last update operations
 
-The "MongoCollection" type implements the basic CRUD operations defined in the "Colleciton" interface. IDs can be passed as strings or bson.ObjectIDs, and objects are usually types that include the "Base" type (see above).
+The "MongoCollection" type implements the basic CRUD operations defined in the "Colleciton" interface. IDs ,must be passed as strings, and objects are usually types that include the "Base" type (see above).
 
 ```go
 var u User
