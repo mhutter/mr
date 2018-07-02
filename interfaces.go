@@ -9,7 +9,8 @@ import (
 // Model must be implemented by types that should be inserted into the
 // Repository
 type Model interface {
-	getID() string
+	getID() bson.ObjectId
+	setID(bson.ObjectId)
 	generateID()
 	setCreatedAt(time.Time)
 	setUpdatedAt(time.Time)
@@ -23,5 +24,6 @@ type Repository interface {
 	FindOne(query bson.M, result interface{}) error
 	FindID(id string, result interface{}) error
 	Update(object Model) error
+	UpdateID(id string, object Model) error
 	Delete(object Model) error
 }

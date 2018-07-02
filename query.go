@@ -46,7 +46,22 @@ func (r MongoRepo) Update(object Model) error {
 	return r.CollectionFor(object).UpdateId(object.getID(), object)
 }
 
-// Delete removes the document with the same ID as the given one
+// UpdateID updates the document with the given ID. It makes sure the ID is not
+// changed and the "updated_at" is updated.
+//
+// Returns an ErrNoObjectID if "id" is not a valid ObjectID.
+func (r MongoRepo) UpdateID(id string, object Model) error {
+	if !bson.IsObjectIdHex(id) {
+		return ErrNoObjectID(id)
+	}
+	object.setID(bson.ObjectIdHex(id))
+	return r.Update(object)
+}
+
+// Delete removes the document with the same ID as the given one.
+//
+// Note that there is no "DeleteID" method as we need the object to determine
+// the collection name anyway...
 func (r MongoRepo) Delete(object Model) error {
 	return r.CollectionFor(object).RemoveId(object.getID())
 }
