@@ -1,6 +1,7 @@
 # MongoRepo
 
 [![GoDoc](https://godoc.org/github.com/mhutter/mr?status.svg)](https://gowalker.org/github.com/mhutter/mr)
+[![Build Status](https://travis-ci.com/mhutter/mr.svg?branch=master)](https://travis-ci.com/mhutter/mr)
 
 Library to ease interaction with MongoDB.
 
