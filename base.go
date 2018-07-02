@@ -17,8 +17,9 @@ type Base struct {
 	UpdatedAt time.Time     `bson:"updated_at" json:"updated_at,omitempty"`
 }
 
-func (b *Base) getID() bson.ObjectId { return b.ID }
-func (b *Base) generateID()          { b.ID = bson.NewObjectId() }
+func (b *Base) getID() bson.ObjectId   { return b.ID }
+func (b *Base) setID(id bson.ObjectId) { b.ID = id }
+func (b *Base) generateID()            { b.ID = bson.NewObjectId() }
 
 func (b *Base) setCreatedAt(t time.Time) { b.CreatedAt = t }
 func (b *Base) setUpdatedAt(t time.Time) { b.UpdatedAt = t }
