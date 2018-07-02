@@ -17,12 +17,12 @@ func (r MongoRepo) Insert(object Model) error {
 }
 
 // FindAll return all objects in `coll`
-func (r MongoRepo) FindAll(result []interface{}) error {
+func (r MongoRepo) FindAll(result interface{}) error {
 	return r.CollectionFor(result).Find(nil).All(result)
 }
 
 // Find all documents based on query
-func (r MongoRepo) Find(query bson.M, result []interface{}) error {
+func (r MongoRepo) Find(query bson.M, result interface{}) error {
 	return r.CollectionFor(result).Find(query).All(result)
 }
 

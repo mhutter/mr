@@ -18,8 +18,8 @@ type Model interface {
 // Repository interacts with the actual database
 type Repository interface {
 	Insert(object Model) error
-	FindAll(result []interface{}) error
-	Find(query bson.M, result []interface{}) error
+	FindAll(result interface{}) error
+	Find(query bson.M, result interface{}) error
 	FindOne(query bson.M, result interface{}) error
 	FindID(id string, result interface{}) error
 	Update(object Model) error
