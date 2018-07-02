@@ -3,6 +3,7 @@ package mr
 import (
 	"log"
 	"os"
+	"time"
 
 	"github.com/globalsign/mgo"
 )
@@ -43,6 +44,7 @@ func Connect(url string) (Repository, error) {
 		return nil, ErrInvalidURL(url)
 	}
 
+	info.Timeout = 5 * time.Second
 	session, err := mgo.DialWithInfo(info)
 	if err != nil {
 		return nil, err
