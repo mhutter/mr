@@ -33,8 +33,13 @@ Doing so will add the following fields to your type:
 The "MongoCollection" type implements the basic CRUD operations defined in the "Colleciton" interface. IDs ,must be passed as strings, and objects are usually types that include the "Base" type (see above).
 
 ```go
-var u User
-err := repo.C("users").Find("5b2ec2bc5a39251ef18064f8", &u)
+user := User{
+        Name: "John",
+}
+err := repo.Insert(&user)
+
+var users User
+err := repo.FindAll(&users)
 ```
 
 > [Manuel Hutter](https://hutter.io) -

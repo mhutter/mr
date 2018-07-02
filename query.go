@@ -1,0 +1,52 @@
+package mr
+
+import (
+	"time"
+
+	"github.com/globalsign/mgo/bson"
+)
+
+// Insert generates an ID for `object`, updates date fields and inserts it into
+// `coll`
+func (r MongoRepo) Insert(object Model) error {
+	object.generateID()
+	now := time.Now()
+	object.setCreatedAt(now)
+	object.setUpdatedAt(now)
+	return r.CollectionFor(object).Insert(object)
+}
+
+// FindAll return all objects in `coll`
+func (r MongoRepo) FindAll(result []interface{}) error {
+	return r.CollectionFor(result).Find(nil).All(result)
+}
+
+// Find all documents based on query
+func (r MongoRepo) Find(query bson.M, result []interface{}) error {
+	return r.CollectionFor(result).Find(query).All(result)
+}
+
+// FindOne returns the first item selected by "query"
+func (r MongoRepo) FindOne(query bson.M, result interface{}) error {
+	return r.CollectionFor(result).Find(query).One(result)
+}
+
+// FindID returns one record by its ObjectID. Returns an ErrNoObjectID if "id"
+// is not a valid ObjectID.
+func (r MongoRepo) FindID(id string, result interface{}) error {
+	if !bson.IsObjectIdHex(id) {
+		return ErrNoObjectID(id)
+	}
+	return r.CollectionFor(result).FindId(bson.ObjectIdHex(id)).One(result)
+}
+
+// Update updates the document with the same ID as the given one
+func (r MongoRepo) Update(object Model) error {
+	object.setUpdatedAt(time.Now())
+	return r.CollectionFor(object).UpdateId(object.getID(), object)
+}
+
+// Delete removes the document with the same ID as the given one
+func (r MongoRepo) Delete(object Model) error {
+	return r.CollectionFor(object).RemoveId(object.getID())
+}

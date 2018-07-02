@@ -1,6 +1,10 @@
 package mr
 
-import "time"
+import (
+	"time"
+
+	"github.com/globalsign/mgo/bson"
+)
 
 // Model must be implemented by types that should be inserted into the
 // Repository
@@ -13,16 +17,11 @@ type Model interface {
 
 // Repository interacts with the actual database
 type Repository interface {
-	C(name string) Collection
-}
-
-// Collection represents a MongoDB collection
-type Collection interface {
 	Insert(object Model) error
-	FindAll(result interface{}) error
-	Find(id string, result interface{}) error
-	FindBy(key string, value, result interface{}) error
-	FindOneBy(key string, value, result interface{}) error
+	FindAll(result []interface{}) error
+	Find(query bson.M, result []interface{}) error
+	FindOne(query bson.M, result interface{}) error
+	FindID(id string, result interface{}) error
 	Update(object Model) error
 	Delete(object Model) error
 }

@@ -53,6 +53,6 @@ func Connect(url string) (Repository, error) {
 }
 
 // C returns a Collection
-func (r *MongoRepo) C(name string) Collection {
-	return &MongoCollection{r.Database.C(name)}
+func (r *MongoRepo) C(name string) *mgo.Collection {
+	return r.Database.C(name)
 }
