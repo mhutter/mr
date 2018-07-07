@@ -13,11 +13,7 @@ var reMiddleUpperCase = regexp.MustCompile("(.)([A-Z])")
 // CollectionNameFor determines the collection name for the given object. It
 // naively converts the to lower case and appends an "s".
 func (r MongoRepo) CollectionNameFor(obj interface{}) string {
-	typ := reflect.TypeOf(obj)
-	name := typ.Name()
-	if typ.Kind() == reflect.Slice {
-		name = typ.Elem().Name()
-	}
+	name := realTypeOf(obj).Name()
 	name = reMiddleUpperCase.ReplaceAllString(name, "${1}_${2}")
 	return strings.ToLower(name) + "s"
 }
@@ -26,4 +22,25 @@ func (r MongoRepo) CollectionNameFor(obj interface{}) string {
 // on the return value of "CollectionNameFor".
 func (r MongoRepo) CollectionFor(obj interface{}) *mgo.Collection {
 	return r.Database.C(r.CollectionNameFor(obj))
+}
+
+var kindsWithElem = []reflect.Kind{
+	reflect.Array,
+	reflect.Chan,
+	reflect.Ptr,
+	reflect.Slice,
+}
+
+func realTypeOf(obj interface{}) reflect.Type {
+	typ := reflect.TypeOf(obj)
+	return unwrapType(typ)
+}
+func unwrapType(typ reflect.Type) reflect.Type {
+	for _, kind := range kindsWithElem {
+		if typ.Kind() == kind {
+			return unwrapType(typ.Elem())
+		}
+	}
+
+	return typ
 }

@@ -14,8 +14,8 @@ type testBar struct{}
 var v = map[string]interface{}{
 	"foos":      Foo{},
 	"bars":      make([]bar, 0, 0),
-	"test_foos": TestFoo{},
-	"test_bars": []testBar{},
+	"test_foos": &TestFoo{},
+	"test_bars": &[]testBar{},
 }
 
 func TestCollectionNameFor(t *testing.T) {
