@@ -1,8 +1,10 @@
 package mr
 
 import (
+	"log"
 	"time"
 
+	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 )
 
@@ -64,4 +66,22 @@ func (r MongoRepo) UpdateID(id string, object Model) error {
 // the collection name anyway...
 func (r MongoRepo) Delete(object Model) error {
 	return r.CollectionFor(object).RemoveId(object.getID())
+}
+
+// EnsureUnique creates unique keys for the given Model
+func (r MongoRepo) EnsureUnique(object Model, keys []string) {
+	coll := r.CollectionFor(object)
+	if err := coll.EnsureIndex(mgo.Index{
+		Key:        keys,
+		Unique:     true,
+		DropDups:   true,
+		Background: true,
+	}); err != nil {
+		log.Printf(
+			"ERROR creating unique index in '%s' for '%s': %s\n",
+			coll.Name,
+			keys,
+			err,
+		)
+	}
 }

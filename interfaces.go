@@ -26,4 +26,5 @@ type Repository interface {
 	Update(object Model) error
 	UpdateID(id string, object Model) error
 	Delete(object Model) error
+	EnsureUnique(object Model, keys []string)
 }
