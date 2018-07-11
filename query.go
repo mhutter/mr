@@ -74,7 +74,6 @@ func (r MongoRepo) EnsureUnique(object Model, keys []string) {
 	if err := coll.EnsureIndex(mgo.Index{
 		Key:        keys,
 		Unique:     true,
-		DropDups:   true,
 		Background: true,
 	}); err != nil {
 		log.Printf(
